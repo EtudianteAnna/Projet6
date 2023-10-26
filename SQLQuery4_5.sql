@@ -1,7 +1,7 @@
 USE [Projet6]
 GO
 
-/****** Object:  StoredProcedure [dbo].[GetProblemsInProgressAllProducts_4_5]    Script Date: 25/10/2023 14:09:34 ******/
+/****** Object:  StoredProcedure [dbo].[GetProblemsInProgressAllProducts_4_5]    Script Date: 26/10/2023 09:30:46 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -10,8 +10,9 @@ GO
 
 
 
+
 -- Récréation de la procédure stockée
-CREATE OR ALTER   PROCEDURE [dbo].[GetProblemsInProgressAllProducts_4_5]
+CREATE OR ALTER     PROCEDURE [dbo].[GetProblemsInProgressAllProducts_4_5]
     @CreatedDate DATE = NULL,
     @StatusName NVARCHAR(255) = N'En cours',
     @Keywords NVARCHAR(MAX) = NULL,
@@ -27,7 +28,6 @@ BEGIN
     FROM [Ticket] T
     INNER JOIN [Status] S ON T.[StatusId] = S.[StatusId]
 	LEFT JOIN [ProductVersionOpSys] PV ON T.[TicketId] = PV.[ProductId]
-LEFT JOIN [Product] P ON PV.[ProductId] = P.[ProductId]
 
     WHERE
         S.[Name] = @StatusName  -- Utilisation de la variable @StatusName
@@ -37,7 +37,9 @@ LEFT JOIN [Product] P ON PV.[ProductId] = P.[ProductId]
         )
         AND (
             @Keywords IS NULL  -- Aucun mot-clé spécifié
-            OR CHARINDEX(@Keywords, T.[Description]) > 0
+            OR CHARINDEX(@Keywords, T.[Description]) >0
+		
+							
         );
 END;
 
